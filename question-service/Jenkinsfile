@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_USERNAME = credentials('docker-hub-username')
+        DOCKER_HUB_PASSWORD = credentials('docker-hub-password')
+        AWS_DEFAULT_REGION = 'your-region'
+        AWS_ACCESS_KEY_ID = credentials('your-aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('your-aws-secret-access-key')
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                dir('question-service') {
+                    sh 'mvn clean compile'
+                    sh 'mvn package'
+                    sh 'docker build -t question-service .'
+                    sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+                    sh "docker push $DOCKER_HUB_USERNAME/question-service:latest"
+                }
+            }
+        }
+    }
+}
+
