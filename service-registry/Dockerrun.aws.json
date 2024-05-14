@@ -1,0 +1,18 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "containerDefinitions": [
+    {
+      "name": "eureka-server",
+      "image": "gokulraj6570/eureka-server:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 8761,
+          "containerPort": 8761
+        }
+      ]
+    }
+  ]
+}
+
